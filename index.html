@@ -1,0 +1,50 @@
+<!--
+ * @Date: 2020-05-17 20:52:31
+ * @LastEditors: Alive
+ * @LastEditTime: 2020-05-17 23:09:02
+ * @FilePath: /index.html
+--> 
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="./resource/vue.js" type="text/javascript" charset="utf-8"></script>
+        <!-- <script src="./source/vue.min.js"></script> -->
+        <script src="./src/main.js" type="text/javascript" charset="utf-8"></script>
+        <link href="./css/main.css" rel="stylesheet" />
+    </head>
+    <body>
+        <div id="app">
+            <p>{{message}} {{name}}</p>
+            <p v-bind:class="'font-white ' + kidClass">{{kidName}}</p>
+            <!-- 不支持es6 模板字符串写法 :( -->
+            <!-- <p v-bind:class=`font-white ${kidClass}`>{{kidName}}</p> -->
+            <p>{{kidName.length > 6 ? 'big kid' : 'little kid'}}</p>
+            <p>{{kidName.split('').reverse().join('')}}</p>
+            <p v-if="seen">ops~</p>
+            <p v-html="rawHtml"></p>
+            <button onclick="changeName()">点击</button>
+            <button @click="changeName">同样的点击</button>
+            <button v-on:click="changeName">又是个点击</button>
+        </div>
+
+        <!-- 阻止单击事件冒泡 -->
+        <a v-on:click.stop="doThis"></a>
+        
+        <!-- 提交事件不再重载页面 -->
+        <form v-on:submit.prevent="onSubmit"></form>
+        
+        <!-- 修饰符可以串联 -->
+        <a v-on:click.stop.prevent="doThat"></a>
+        
+        <!-- 只有修饰符 -->
+        <form v-on:submit.prevent></form>
+        
+        <!-- 添加事件监听器时使用事件捕获模式 即父元素先捕获触发，再给释放给子元素 -->
+        <!-- 即内部元素触发的事件先在此处理，然后才交由内部元素进行处理 -->
+        <div v-on:click.capture="doThis">...</div>
+        
+        <!-- 只当在 event.target 是当前元素自身时触发处理函数，确定唯一性 -->
+        <!-- 即事件不是从内部元素触发的 -->
+        <div v-on:click.self="doThat">...</div>
+    </body>
+</html>
