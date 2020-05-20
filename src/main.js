@@ -1,12 +1,24 @@
-window.onload = this.init;
-let app = null, kid = null;
+window.onload = init;
+let app = null, kid = null, form;
 let data = {
     message: 'Hello Vue',
     name: 'Hi',
     rawHtml: '<div style="background-color: red; height: 20px; width: 20px"></div>',
     kidName: 'hi vue',
     kidClass: 'red',
-    seen: false
+    seen: false,
+    rawClasses: ['red'],
+    isShowBtn: false,
+    items: [
+        {name: 'item1'},
+        {name: 'item2'},
+        {name: 'item3'},
+    ],
+    dictionary: {
+        name: 'a',
+        age: '10',
+        sex: 'male'
+    }
 };
 
 const methods = {
@@ -14,30 +26,16 @@ const methods = {
     changeMessage
 };
 
-function lifeCycleLog(elName, lifeName) {
-    return function () {
-        console.group(elName, lifeName);
-        console.log(...arguments);
-        console.groupEnd(elName, lifeName);
-    }
-}
-
-function lifeCycleConfig(elName) {
-    let config = {};
-    const life = ['beforeCreate', 'created', 'beforeMount', 'mounted', 'beforeUpdate', 'updated', 'activated', 'deactivated', 'beforeDestroy', 'destroyed', 'errorCaptured'];
-    life.map((lifeName) => {
-        config[lifeName] = lifeCycleLog(elName, lifeName);
-    })
-    return config;
-}
-
 function init() {
     app = new Vue({
         el: '#app',
         data,
         methods,
-        ...lifeCycleConfig('app')
+        ...new LifeCycleConfig('app')
     });
+    // form = new Vue({
+    //     el: '#custom-form'
+    // });
     // kid = new Vue({
     //     el: '#app > p',
     //     data: { kidName: '', kidClass: '' },
@@ -51,16 +49,20 @@ function init() {
         // app.kidName = 'I\'m a kid'; // 会触发重新渲染
         data.kidClass = 'blue';
         app.$data.seen = true;
+        app.$data.rawClasses.push('blue');
+        app.$data.isShowBtn = true;
         // app.$el.removeChild(kid.$el); // 不会触发生命周期
     }, 2000);
 }
 
-function changeName() {
-    data.name = 'Hi Vue';
+function changeName(name) {
+    data.name = typeof name === 'string' ? name : 'Hi Vue';
+    console.log(this.name, name);
 }
 
-function changeMessage() {
-    data.message = 'Hello World!';
+function changeMessage(message) {
+    data.message = typeof message === 'string' ? message : 'Hello World!';
+    console.log(this.message, message);
 }
 
 function baseWatch(watchName, newValue, oldValue) {

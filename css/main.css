@@ -2,6 +2,10 @@
     color: white;
 }
 
+.animation{
+    transition: all 0.2s linear;
+}
+
 .red{
     background-color: red;
 }

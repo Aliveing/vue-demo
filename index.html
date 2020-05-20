@@ -1,7 +1,7 @@
 <!--
  * @Date: 2020-05-17 20:52:31
  * @LastEditors: Alive
- * @LastEditTime: 2020-05-17 23:09:02
+ * @LastEditTime: 2020-05-20 17:11:45
  * @FilePath: /index.html
 --> 
 <!DOCTYPE html>
@@ -9,42 +9,62 @@
     <head>
         <script src="./resource/vue.js" type="text/javascript" charset="utf-8"></script>
         <!-- <script src="./source/vue.min.js"></script> -->
+        <script src="./src/LifeStyleConfig.js" type="text/javascript" charset="utf-8"></script>
+        <script src="./src/components/custom-form.js" type="text/javascript" charset="utf-8"></script>
         <script src="./src/main.js" type="text/javascript" charset="utf-8"></script>
         <link href="./css/main.css" rel="stylesheet" />
     </head>
     <body>
         <div id="app">
-            <p>{{message}} {{name}}</p>
-            <p v-bind:class="'font-white ' + kidClass">{{kidName}}</p>
+            <p>NAME: {{name}}</p>
+            <p>MESSAGE: {{message}}</p>
+            <p :class="'font-white ' + kidClass">KID_NAME: {{kidName}}</p>
             <!-- 不支持es6 模板字符串写法 :( -->
             <!-- <p v-bind:class=`font-white ${kidClass}`>{{kidName}}</p> -->
             <p>{{kidName.length > 6 ? 'big kid' : 'little kid'}}</p>
             <p>{{kidName.split('').reverse().join('')}}</p>
             <p v-if="seen">ops~</p>
-            <p v-html="rawHtml"></p>
-            <button onclick="changeName()">点击</button>
-            <button @click="changeName">同样的点击</button>
-            <button v-on:click="changeName">又是个点击</button>
+            <p v-html="rawHtml" :class="rawClasses" class="animation"></p>
+            <div id='custom-form'>
+                <custom-form :name="name" :message="message" @change-message="changeMessage" @change-name="changeName"></custom-form>
+            </div>
+            <template v-if="isShowBtn">
+                <!-- 这种写法指针指向不明 -->
+                <button onclick="changeName(name)">点击</button>
+                <button @click="changeName">同样的点击</button>
+                <button v-on:click="changeMessage(message)">又是个点击</button>
+            </template>
+            <template v-else="isShowBtn">
+                <!-- 阻止单击事件冒泡 -->
+                <a v-on:click.stop="doThis"></a>
+            
+                <!-- 提交事件不再重载页面 -->
+                <form v-on:submit.prevent="onSubmit"></form>
+            
+                <!-- 修饰符可以串联 -->
+                <a v-on:click.stop.prevent="doThat"></a>
+            
+                <!-- 只有修饰符 -->
+                <form v-on:submit.prevent></form>
+            
+                <!-- 添加事件监听器时使用事件捕获模式 即父元素先捕获触发，再给释放给子元素 -->
+                <!-- 即内部元素触发的事件先在此处理，然后才交由内部元素进行处理 -->
+                <div v-on:click.capture="doThis">...</div>
+            
+                <!-- 只当在 event.target 是当前元素自身时触发处理函数，确定唯一性 -->
+                <!-- 即事件不是从内部元素触发的 -->
+                <div v-on:click.self="doThat">...</div>
+            </template>
+            <ul>
+                <li v-for="item, index in items" :key="index">
+                    {{index + 1}}. {{item.name}}
+                </li>
+            </ul>
+            <ul>
+                <li v-for="obj,key in dictionary" :key="key">
+                    {{key}} = {{obj}}
+                </li>
+            </ul>
         </div>
-
-        <!-- 阻止单击事件冒泡 -->
-        <a v-on:click.stop="doThis"></a>
-        
-        <!-- 提交事件不再重载页面 -->
-        <form v-on:submit.prevent="onSubmit"></form>
-        
-        <!-- 修饰符可以串联 -->
-        <a v-on:click.stop.prevent="doThat"></a>
-        
-        <!-- 只有修饰符 -->
-        <form v-on:submit.prevent></form>
-        
-        <!-- 添加事件监听器时使用事件捕获模式 即父元素先捕获触发，再给释放给子元素 -->
-        <!-- 即内部元素触发的事件先在此处理，然后才交由内部元素进行处理 -->
-        <div v-on:click.capture="doThis">...</div>
-        
-        <!-- 只当在 event.target 是当前元素自身时触发处理函数，确定唯一性 -->
-        <!-- 即事件不是从内部元素触发的 -->
-        <div v-on:click.self="doThat">...</div>
     </body>
 </html>
