@@ -1,7 +1,7 @@
 <!--
  * @Date: 2020-05-17 20:52:31
  * @LastEditors: Alive
- * @LastEditTime: 2020-05-20 17:11:45
+ * @LastEditTime: 2020-05-21 09:26:49
  * @FilePath: /index.html
 --> 
 <!DOCTYPE html>
@@ -16,25 +16,27 @@
     </head>
     <body>
         <div id="app">
-            <p>NAME: {{name}}</p>
-            <p>MESSAGE: {{message}}</p>
-            <p :class="'font-white ' + kidClass">KID_NAME: {{kidName}}</p>
+            <div style="border-bottom: 1px dashed #eee">
+                <p>NAME: {{name}}</p>
+                <p>MESSAGE: {{message}}</p>
+                <p :class="'font-white ' + kidClass">KID_NAME: {{kidName}}</p>
+                <p>KID_SIZE: {{kidName.length > 6 ? 'Big' : 'Little'}}</p>
+                <p>REVERSE_KID: {{kidName.split('').reverse().join('')}}</p>
+            </div>
             <!-- 不支持es6 模板字符串写法 :( -->
             <!-- <p v-bind:class=`font-white ${kidClass}`>{{kidName}}</p> -->
-            <p>{{kidName.length > 6 ? 'big kid' : 'little kid'}}</p>
-            <p>{{kidName.split('').reverse().join('')}}</p>
-            <p v-if="seen">ops~</p>
             <p v-html="rawHtml" :class="rawClasses" class="animation"></p>
-            <div id='custom-form'>
+            <p class='ops' v-if="seen">ops~</p>
+            <div id='custom-form' style="border: 1px dashed #eee; border-left: none; border-right: none;">
                 <custom-form :name="name" :message="message" @change-message="changeMessage" @change-name="changeName"></custom-form>
             </div>
-            <template v-if="isShowBtn">
+            <div v-if="isShowBtn" style="margin-top: 20px">
                 <!-- 这种写法指针指向不明 -->
                 <button onclick="changeName(name)">点击</button>
                 <button @click="changeName">同样的点击</button>
                 <button v-on:click="changeMessage(message)">又是个点击</button>
-            </template>
-            <template v-else="isShowBtn">
+            </div>
+            <div v-else="isShowBtn">
                 <!-- 阻止单击事件冒泡 -->
                 <a v-on:click.stop="doThis"></a>
             
@@ -54,17 +56,19 @@
                 <!-- 只当在 event.target 是当前元素自身时触发处理函数，确定唯一性 -->
                 <!-- 即事件不是从内部元素触发的 -->
                 <div v-on:click.self="doThat">...</div>
-            </template>
-            <ul>
-                <li v-for="item, index in items" :key="index">
-                    {{index + 1}}. {{item.name}}
-                </li>
-            </ul>
-            <ul>
-                <li v-for="obj,key in dictionary" :key="key">
-                    {{key}} = {{obj}}
-                </li>
-            </ul>
+            </div>
+            <div class="list">
+                <ul>
+                    <li v-for="item, index in items" :key="index">
+                        {{index + 1}}. {{item.name}}
+                    </li>
+                </ul>
+                <ul>
+                    <li v-for="obj,key in dictionary" :key="key">
+                        {{key}} = {{obj}}
+                    </li>
+                </ul>
+            </div>
         </div>
     </body>
 </html>

@@ -6,10 +6,26 @@
     transition: all 0.2s linear;
 }
 
+.ops {
+    color: #eee;
+    font-size: 10px;
+}
+
 .red{
-    background-color: red;
+    padding: 10px;
+    background-color: lightcoral;
 }
 
 .blue{
-    background-color: blue;
+    padding: 10px;
+    background-color: skyblue;
+}
+
+.list{
+    margin-top: 20px;
+    background-color: #333;
+    color: white;
+    padding: 10px 0;
+    box-shadow: 0px 8px 20px black;
+    border-radius: 10px;
 }
